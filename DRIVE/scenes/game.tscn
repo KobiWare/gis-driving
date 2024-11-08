@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://daw3nqh2wyymw"]
+[gd_scene load_steps=13 format=3 uid="uid://daw3nqh2wyymw"]
 
 [ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
 [ext_resource type="Texture2D" uid="uid://qoju4oifolkt" path="res://icon.svg" id="2_bn7m0"]
 [ext_resource type="Script" path="res://scripts/OSM.gd" id="4_f5nvx"]
+[ext_resource type="Script" path="res://scripts/orbitcamera.gd" id="5_6baf8"]
 
 [sub_resource type="Curve3D" id="Curve3D_sdda2"]
 bake_interval = 4.6
@@ -40,6 +41,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.03864, 0)
 curve = SubResource("Curve3D_sdda2")
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="testRoad"]
+visible = false
 polygon = PackedVector2Array(0, 0, -0.0468364, 0.347899, 1.01191, 0.323431, 1, 0)
 mode = 2
 path_node = NodePath("..")
@@ -52,8 +54,12 @@ path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
 
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+script = ExtResource("5_6baf8")
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.999996, 1.39276e-10, -0.00300202, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.97226, -0.336413, 1.01231, -5.42391)
+visible = false
 script = ExtResource("1_nkimv")
 
 [node name="VehicleBody3D" type="VehicleBody3D" parent="."]
@@ -132,3 +138,6 @@ transform = Transform3D(-0.110752, 0.549911, -0.827848, 0.400783, 0.786951, 0.46
 
 [node name="OSM" type="Node3D" parent="."]
 script = ExtResource("4_f5nvx")
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+script = ExtResource("5_6baf8")
