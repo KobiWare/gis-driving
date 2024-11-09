@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dek7ir6sg1xdo"]
+
+[ext_resource type="Texture2D" uid="uid://c6y3vm8go6jgg" path="res://assets/materials/roads/trail.jpg" id="1_rng85"]
+[ext_resource type="Texture2D" uid="uid://ctvdbo1vmsvmh" path="res://assets/materials/roads/trail_d.jpeg" id="2_nl7ee"]
+
+[resource]
+albedo_texture = ExtResource("1_rng85")
+metallic = 1.0
+metallic_texture = ExtResource("2_nl7ee")
+metallic_texture_channel = 2
+roughness_texture_channel = 2
+ao_enabled = true
+ao_light_affect = 0.07
+ao_texture = ExtResource("1_rng85")
+heightmap_enabled = true
+heightmap_scale = 1.54
+heightmap_texture = ExtResource("2_nl7ee")
+uv1_scale = Vector3(0.6, 8, 1)
