@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://hf6jo44hc4ym"]
+
+[ext_resource type="Script" path="res://scripts/start screen/button.gd" id="1_83ww6"]
+[ext_resource type="Script" path="res://scripts/start screen/button_2.gd" id="2_knwme"]
+
+[node name="StartScreen" type="Node2D"]
+
+[node name="Button" type="Button" parent="."]
+offset_left = 429.0
+offset_top = 54.0
+offset_right = 623.0
+offset_bottom = 157.0
+text = "Start"
+script = ExtResource("1_83ww6")
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 623.0
+offset_top = 54.0
+offset_right = 817.0
+offset_bottom = 157.0
+text = "Continue"
+script = ExtResource("2_knwme")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_left = 87.0
+offset_top = 54.0
+offset_right = 429.0
+offset_bottom = 157.0
+placeholder_text = "Input lat long of start"
+
+[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]
+[connection signal="button_down" from="Button2" to="Button2" method="_on_button_down"]
