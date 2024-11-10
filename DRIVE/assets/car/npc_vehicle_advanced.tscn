@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmeapknt42mic"]
+
+[ext_resource type="Script" path="res://scripts/npc.gd" id="1_ij8yu"]
+[ext_resource type="PackedScene" uid="uid://c0dfjhuaeg5jl" path="res://assets/car/ford-model-t-v2-downloadable/source/car_base.tscn" id="2_bxcen"]
+[ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="3_h6pqk"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7jt1i"]
+friction = 0.2
+bounce = 0.05
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tc1yr"]
+points = PackedVector3Array(0.5, 0.4, 1, 0.5, -0.4, 1, 0.5, 0.4, -1, -0.5, 0.4, 1, -0.5, -0.4, 1, 0.5, -0.4, -1, -0.5, 0.4, -1, -0.5, -0.4, -1)
+
+[node name="NPC vehicle" type="Node3D"]
+
+[node name="VehicleBody3D" type="VehicleBody3D" parent="."]
+mass = 500.0
+physics_material_override = SubResource("PhysicsMaterial_7jt1i")
+script = ExtResource("1_ij8yu")
+
+[node name="VehicleBody" parent="VehicleBody3D" instance=ExtResource("2_bxcen")]
+transform = Transform3D(0.55, 0, 0, 0, 0.55, 0, 0, 0, 0.55, -0.149645, 0, 0.072197)
+
+[node name="VehicleWheel3D" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -0.636804, 0.637618, 0.868846)
+use_as_traction = true
+use_as_steering = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_014" parent="VehicleBody3D/VehicleWheel3D" instance=ExtResource("3_h6pqk")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="VehicleWheel3D3" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0.370991, 0.637618, 0.868846)
+use_as_traction = true
+use_as_steering = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_015" parent="VehicleBody3D/VehicleWheel3D3" instance=ExtResource("3_h6pqk")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="VehicleWheel3D2" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -0.636804, 0.637618, -0.735941)
+use_as_traction = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_014" parent="VehicleBody3D/VehicleWheel3D2" instance=ExtResource("3_h6pqk")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="VehicleWheel3D4" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0.370991, 0.637618, -0.735941)
+use_as_traction = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_014" parent="VehicleBody3D/VehicleWheel3D4" instance=ExtResource("3_h6pqk")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VehicleBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.153597, 0.638837, 0)
+shape = SubResource("ConvexPolygonShape3D_tc1yr")

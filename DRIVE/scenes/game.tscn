@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://daw3nqh2wyymw"]
+[gd_scene load_steps=21 format=3 uid="uid://daw3nqh2wyymw"]
 
 [ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="5_twma2"]
 [ext_resource type="Texture2D" uid="uid://e16neowogqvh" path="res://assets/materials/roads/grass.jpg" id="7_aw0vu"]
 [ext_resource type="Material" uid="uid://mq6vrepyvhnq" path="res://assets/materials/buildings/skyscraper/other/general.tres" id="7_im2mr"]
+[ext_resource type="Script" path="res://scripts/npcs.gd" id="9_ey133"]
 
 [sub_resource type="Curve3D" id="Curve3D_sdda2"]
 bake_interval = 0.5
@@ -82,6 +83,10 @@ path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
 
+[node name="PathFollow3D" type="PathFollow3D" parent="testRoad"]
+transform = Transform3D(-0.612191, 0, 0.790688, 0, 1, 0, -0.790688, 0, -0.612191, -8.49928, 0, 5.33885)
+progress = 10.05
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.999996, 2.28612e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
 script = ExtResource("1_nkimv")
@@ -90,7 +95,7 @@ script = ExtResource("1_nkimv")
 script = ExtResource("5_6baf8")
 
 [node name="VehicleBody3D" type="VehicleBody3D" parent="."]
-transform = Transform3D(0.691727, 0, 0.722159, 0, 1, 0, -0.722159, 0, 0.691727, -3.05284, 5.93441, 47.0473)
+transform = Transform3D(0.691727, 0, 0.722159, 0, 1, 0, -0.722159, 0, 0.691727, -3.05284, 1.93441, 47.0473)
 mass = 500.0
 physics_material_override = SubResource("PhysicsMaterial_7jt1i")
 center_of_mass_mode = 1
@@ -176,3 +181,6 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 18.
 polygon = PackedVector2Array(0, 0, 0, 20, 20, 20, 20, 0)
 depth = 20.0
 material = ExtResource("7_im2mr")
+
+[node name="NPCS" type="Node3D" parent="."]
+script = ExtResource("9_ey133")

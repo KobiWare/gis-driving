@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dktpkdukymuhx"]
+
+[ext_resource type="Script" path="res://scripts/npc.gd" id="1_lbahl"]
+[ext_resource type="PackedScene" uid="uid://c0dfjhuaeg5jl" path="res://assets/car/ford-model-t-v2-downloadable/source/car_base.tscn" id="2_im8vf"]
+[ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="3_0t12t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i43d1"]
+size = Vector3(1.05835, 1, 2.05811)
+
+[node name="NPC vehicle" type="Node3D"]
+
+[node name="Vehicle" type="StaticBody3D" parent="."]
+script = ExtResource("1_lbahl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Vehicle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12854, 0.641982, 0.0671387)
+shape = SubResource("BoxShape3D_i43d1")
+
+[node name="VehicleBody" parent="Vehicle" instance=ExtResource("2_im8vf")]
+transform = Transform3D(0.55, 0, 0, 0, 0.55, 0, 0, 0, 0.55, -0.149645, 0, 0.072197)
+
+[node name="Cylinder_014" parent="Vehicle" instance=ExtResource("3_0t12t")]
+transform = Transform3D(55, 4.20352e-13, -9.61653e-06, 9.61653e-06, -2.40413e-06, 55, 0, -55, -2.40413e-06, -0.636804, 0.297536, 0.868846)
+
+[node name="Cylinder_016" parent="Vehicle" instance=ExtResource("3_0t12t")]
+transform = Transform3D(55, 4.20352e-13, -9.61653e-06, 9.61653e-06, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0.370991, 0.297536, 0.868846)
+
+[node name="Cylinder_015" parent="Vehicle" instance=ExtResource("3_0t12t")]
+transform = Transform3D(55, 4.20352e-13, -9.61653e-06, 9.61653e-06, -2.40413e-06, 55, 0, -55, -2.40413e-06, -0.636804, 0.297536, -0.735941)
+
+[node name="Cylinder_017" parent="Vehicle" instance=ExtResource("3_0t12t")]
+transform = Transform3D(55, 4.20352e-13, -9.61653e-06, 9.61653e-06, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0.370991, 0.297536, -0.735941)

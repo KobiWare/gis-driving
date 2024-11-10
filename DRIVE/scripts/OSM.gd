@@ -1,10 +1,5 @@
 extends Node3D
 
-const roadTextures = [
-	preload("res://assets/materials/roads/primary.tres"),
-	preload("res://assets/materials/roads/secondary.tres")
-]
-
 const skyscraperBaseTextures = [
 	preload("res://assets/materials/buildings/skyscraper/base/1.jpg"),
 	preload("res://assets/materials/buildings/skyscraper/base/2.jpg"),
@@ -21,16 +16,7 @@ const skyscraperBaseMaterial = preload("res://assets/materials/buildings/skyscra
 
 const skyscraperMainMaterial = preload("res://assets/materials/buildings/skyscraper/other/general.tres")
 
-class LatLong:
-	static var relPos = Vector2(40.70562, -74.0176)
-	var pos
-	
-	func _init(pos: Vector2) -> void:
-		self.pos = pos
-		
-	# TODO: I have no idea how to actually calculate this lmao
-	func toFeet() -> Vector2:
-		return (self.pos - relPos) * 100000
+const roadScript = preload("res://scripts/road.gd")
 
 class Buildable extends Node:
 	var element_name = null
@@ -53,123 +39,22 @@ class Way extends Buildable:
 	func _init() -> void:
 		element_name = "way"
 	
-	func getRoadWidthFromClassification(val):
-		match val:
-			"motorway":
-				return 0#15
-			"trunk":
-				return 3#10
-			"primary":
-				return 3#10
-			"secondary":
-				return 7
-			"tertiary":
-				return 7
-			"unclassified":
-				return 7
-			"residential":
-				return 7
-			"motorway_link":
-				return 0
-			"trunk_link":
-				return 3
-			"primary_link":
-				return 3
-			"secondary_link":
-				return 5
-			"tertiary_link":
-				return 5
-			"living_street":
-				return 5
-			"service":
-				return 3
-			"pedestrian":
-				return 5
-			"track":
-				return 3.5
-			"footway":
-				return 2
-			"path":
-				return 2
-			"sidewalk":
-				return 2
-		return 0
-	
-	func getRoadMaterial(val):
-		match val:
-			"motorway":
-				return roadTextures[1]
-			"trunk":
-				return roadTextures[1]
-			"primary":
-				return roadTextures[1]
-			"secondary":
-				return roadTextures[0]
-			"tertiary":
-				return roadTextures[0]
-			"residential":
-				return roadTextures[0]
-			"motorway_link":
-				return roadTextures[0]
-			"trunk_link":
-				return roadTextures[0]
-			"primary_link":
-				return roadTextures[0]
-			"secondary_link":
-				return roadTextures[0]
-			"tertiary_link":
-				return roadTextures[0]
-	
 	# TODO: water
 	func construct() -> void:
 		for tag in tags:
 			if tag['k'] == 'highway':
-				constructRoad(getRoadWidthFromClassification(tag['v']), tag['v'])
+				constructRoad()
 				break
 			if tag['k'] == 'building':
 				constructBuilding(tag['v'])
 	
 	# TODO: Intersections, street-lamps, car npcs, bridges
 	
-	func constructRoad(width, roadType) -> void:
+	func constructRoad() -> void:
 		var path = Path3D.new()
-		path.curve = Curve3D.new()
-		# Build a path
-		print("Constructing...")
-		for i in nodes:
-			# Construct coordinates
-			var coords = LatLong.new(
-				Vector2(
-					float(i['lat']),
-					float(i['lon'])
-				)
-			)
-			var coordsFeet = coords.toFeet()
-			var coordsAndElevation = Vector3(coordsFeet.x, -1, coordsFeet.y)
-			path.curve.add_point(coordsAndElevation)
-		
-		
-		get_node("./").add_child(path)
-		
-		# CSG polygon
-		var csg = CSGPolygon3D.new()
-		csg.mode = CSGPolygon3D.MODE_PATH
-		
-		var resizedPolygon = PackedVector2Array()
-		for i in csg.polygon:
-			i.x -= 0.5
-			if(i.y == 0):
-				resizedPolygon.append(Vector2(i.x*width*1.1, i.y+0.9))
-			else:
-				resizedPolygon.append(Vector2(i.x*width, i.y + width/300.0 + randf_range(0.0, 0.001)))
-		csg.polygon = resizedPolygon
-		
-		csg.set_use_collision(true)
-		csg.path_node = path.get_path()
-		csg.material = getRoadMaterial(roadType)
-		
-		# Add csg to path
-		path.add_child(csg)
+		add_child(path)
+		path.script = roadScript
+		path.make(self)
 	
 	func constructBuilding(type, levels=-1) -> void:
 		
@@ -184,11 +69,11 @@ class Way extends Buildable:
 		var csg = CSGPolygon3D.new()
 		var polygon = PackedVector2Array()
 		csg.set_use_collision(true)
-		# Build a path
-		print("Constructing building...")
+		
+		# Build csg
 		for i in nodes:
 			# Construct coordinates
-			var coords = LatLong.new(
+			var coords = Globals.LatLong.new(
 				Vector2(
 					float(i['lat']),
 					float(i['lon'])
@@ -227,9 +112,9 @@ func _ready():
 	
 	while parser.read() != ERR_FILE_EOF:
 		var node_type = parser.get_node_type()
-		var node_name = parser.get_node_name()
 		
 		if node_type == XMLParser.NODE_ELEMENT:
+			var node_name = parser.get_node_name()
 			current_element = node_name
 			
 			var attributes_dict = {}
@@ -259,6 +144,7 @@ func _ready():
 					
 				
 		elif node_type == XMLParser.NODE_ELEMENT_END:
+			var node_name = parser.get_node_name()
 			if encapsulation_type != null and encapsulation_type.element_name == node_name:
 				add_child(encapsulation_type)
 				encapsulation_type.construct()
