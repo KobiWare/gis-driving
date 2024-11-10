@@ -108,7 +108,7 @@ func _ready():
 	var encapsulation_type = null
 	var depth = 0
 	
-	parser.open("assets/NY.osm")
+	parser.open("user://user_map.xml")
 	
 	while parser.read() != ERR_FILE_EOF:
 		var node_type = parser.get_node_type()

@@ -22,3 +22,6 @@ func _process(delta):
 		steering = max(-0.2, steering-delta)
 	else:
 		steering /= 1+delta*3
+		
+	if Input.is_action_just_pressed("reset_car"):
+		self.rotation = Vector3(0, 46.2, 0)
