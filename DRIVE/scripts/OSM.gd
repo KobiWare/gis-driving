@@ -22,7 +22,7 @@ const skyscraperBaseMaterial = preload("res://assets/materials/buildings/skyscra
 const skyscraperMainMaterial = preload("res://assets/materials/buildings/skyscraper/other/general.tres")
 
 class LatLong:
-	static var relPos = Vector2(38.927081, -84.363061)
+	static var relPos = Vector2(40.70562, -74.0176)
 	var pos
 	
 	func _init(pos: Vector2) -> void:
