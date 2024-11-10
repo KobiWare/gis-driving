@@ -48,7 +48,7 @@ func _physics_process(delta):
 			distFromCenter = abs((get_parent().get_parent().h_offset + road_width / 4) + sin(deg_to_rad(relativeDirection)))
 		casts.append({"result": result, "angle": relativeDirection, "dangerometer": dangerometer, "distFromCenter": distFromCenter})
 		
-		relativeDirection += 5
+		relativeDirection += 15
 	
 	rotation = Vector3()
 	var sumDanger = 0.2

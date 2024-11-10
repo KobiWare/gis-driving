@@ -5,7 +5,7 @@ var minDist = 30
 var maxDist = 175
 var npc = preload("res://assets/car/npc_vehicle.tscn")
 var npcs = []
-var maxNPCs = 40
+var maxNPCs = 80
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
