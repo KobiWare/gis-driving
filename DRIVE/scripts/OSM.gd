@@ -26,6 +26,7 @@ const dataRequester = preload("res://scenes/osm_data_requester.tscn")
 @export var lon2 := 39.01026 as float
 
 @export var is_first = false
+var is_loaded = false
 
 class Buildable extends Node:
 	var element_name = null
@@ -166,6 +167,7 @@ func _on_request_completed(result, response_code, headers, body):
 		xml_file.close()
 		print("Request complete")
 		parse()
+		is_loaded = true
 	else:
 		print("Request failed with response code: ", response_code)
 
