@@ -1,9 +1,10 @@
 extends VehicleBody3D
 
-
+var view_distance = 0.125
+var environment
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	environment = get_node("/root/Node3D/WorldEnvironment")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -25,3 +26,10 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("reset_car"):
 		self.rotation = Vector3(0, 46.2, 0)
+		
+	if Input.is_action_just_pressed("cycle_view_distance"):
+		if view_distance < 1:
+			view_distance += 0.125
+		else:
+			view_distance = 0
+		environment.environment.fog_density = view_distance

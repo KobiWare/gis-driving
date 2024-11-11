@@ -60,7 +60,9 @@ background_mode = 2
 background_energy_multiplier = 1.05
 sky = SubResource("Sky_hwjky")
 ambient_light_energy = 1.65
-fog_density = 0.0
+fog_enabled = true
+fog_mode = 1
+fog_density = 0.125
 volumetric_fog_density = 0.0
 
 [node name="Node3D" type="Node3D"]
