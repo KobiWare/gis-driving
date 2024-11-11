@@ -101,7 +101,7 @@ func make(way):
 				float(i['lon'])
 			)
 		)
-		var coordsFeet = coords.toFeet()
+		var coordsFeet = coords.toMeters()
 		var coordsAndElevation = Vector3(coordsFeet.x, -1, coordsFeet.y)
 		self.curve.add_point(coordsAndElevation)
 	

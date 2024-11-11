@@ -5,7 +5,7 @@ var minDist = 30
 var maxDist = 175
 var npc = preload("res://assets/car/npc_vehicle.tscn")
 var npcs = []
-var maxNPCs = 80
+var maxNPCs = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,7 +13,7 @@ func _ready() -> void:
 	
 
 func new_npc(targetDistance) -> void:
-	var osm = get_node("/root/Node3D/OSM")
+	var osm = get_node("/root/Node3D/OSMs/OSM")
 	var targetAngledPoint = randf_range(0, PI)
 	var targetPoint = Vector3(cos(targetAngledPoint) * targetDistance, 0, sin(targetAngledPoint) * targetDistance) + camera.global_position
 	

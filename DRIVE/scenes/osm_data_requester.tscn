@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2rh0jnfjlfp5"]
+
+[ext_resource type="Script" path="res://scripts/http_request.gd" id="1_dttwf"]
+
+[node name="OSMDataRequester" type="HTTPRequest"]
+script = ExtResource("1_dttwf")

@@ -18,6 +18,15 @@ const skyscraperMainMaterial = preload("res://assets/materials/buildings/skyscra
 
 const roadScript = preload("res://scripts/road.gd")
 
+const dataRequester = preload("res://scenes/osm_data_requester.tscn")
+
+@export var lat1 := -84.46604  as float
+@export var lon1 := 38.99312 as float
+@export var lat2 := -84.43377 as float
+@export var lon2 := 39.01026 as float
+
+@export var is_first = false
+
 class Buildable extends Node:
 	var element_name = null
 	var tags = []
@@ -79,7 +88,7 @@ class Way extends Buildable:
 					float(i['lon'])
 				)
 			)
-			var coordsFeet = coords.toFeet()
+			var coordsFeet = coords.toMeters()
 			polygon.append(coordsFeet)
 		
 		csg.polygon = polygon
@@ -98,17 +107,15 @@ class Way extends Buildable:
 		csg.add_child(topCsg)
 		
 		get_node("./").add_child(csg)
-	
-	
-# Called when the node enters the scene tree for the first time.
-func _ready():
+
+func parse():
 	var parser = XMLParser.new()
 	var nodes = {}
 	var current_element = ""
 	var encapsulation_type = null
 	var depth = 0
 	
-	parser.open("res://assets/NY-XML.txt")
+	parser.open("user://tmp.xml")
 	
 	while parser.read() != ERR_FILE_EOF:
 		var node_type = parser.get_node_type()
@@ -131,7 +138,8 @@ func _ready():
 				
 			elif current_element == 'nd':
 				if encapsulation_type != null:
-					encapsulation_type.add_node(nodes[attributes_dict['ref']])
+					if(nodes.has(attributes_dict['ref'])):
+						encapsulation_type.add_node(nodes[attributes_dict['ref']])
 				
 			elif current_element == 'node':
 				if encapsulation_type != null:
@@ -149,3 +157,38 @@ func _ready():
 				add_child(encapsulation_type)
 				encapsulation_type.construct()
 				encapsulation_type = null
+
+func _on_request_completed(result, response_code, headers, body):
+	if response_code == 200:
+		var path = "user://tmp.xml"
+		var xml_file = FileAccess.open(path, FileAccess.WRITE)
+		xml_file.store_string(body.get_string_from_utf8())
+		xml_file.close()
+		print("Request complete")
+		parse()
+	else:
+		print("Request failed with response code: ", response_code)
+
+func request_data_parse():
+	var requester_instance = dataRequester.instantiate()
+	
+	if is_first:
+		var tile_size = get_parent().tile_size
+		var rel_pos = Globals.LatLong.relPos
+		requester_instance.lat1 = rel_pos.y - tile_size
+		requester_instance.lat2 = rel_pos.y + tile_size
+		requester_instance.lon1 = rel_pos.x - tile_size
+		requester_instance.lon2 = rel_pos.x + tile_size
+	else:
+		requester_instance.lat1 = lat1
+		requester_instance.lat2 = lat2
+		requester_instance.lon1 = lon1
+		requester_instance.lon2 = lon2
+	
+	add_child(requester_instance)
+	
+	
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	request_data_parse()
