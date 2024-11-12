@@ -30,6 +30,7 @@ var is_loaded = false
 
 class Buildable extends Node:
 	var element_name = null
+	var element_type = null
 	var tags = []
 	var nodes = []
 	
@@ -37,9 +38,18 @@ class Buildable extends Node:
 		pass
 	
 	func add_node(node) -> void:
+		node.merge({'latlon': 
+				Globals.LatLong.new(
+					Vector2(float(node['lat']), float(node['lon']))
+				)
+			}
+		)
 		nodes.append(node)
 	
 	func add_tag(tag) -> void:
+		var recondized_tags = ['highway', 'building']
+		if tag['k'] in recondized_tags:
+			element_type = tag['k']
 		tags.append(tag)
 	
 	func construct() -> void:
@@ -72,7 +82,7 @@ class Way extends Buildable:
 			if type == 'office':
 				levels = int(8.0 / randf_range(0.2,1))
 			elif type == 'yes':
-				levels = 3
+				levels =  int(3.0 / randf_range(0.5,1))
 			else:
 				levels = 2
 		
@@ -94,7 +104,7 @@ class Way extends Buildable:
 		
 		csg.polygon = polygon
 		csg.rotation.x = PI / 2
-		csg.depth = 5 * randi_range(1,min(2, int(levels / 2)))
+		csg.depth = 5 * randi_range(1,min(2, int(levels) / 2))
 		
 		csg.material = skyscraperBaseMaterial.duplicate()
 		csg.material.albedo_texture = skyscraperBaseTextures[randi_range(0, len(skyscraperBaseTextures)-1)]
@@ -128,6 +138,7 @@ func parse():
 			var attributes_dict = {}
 			for idx in range(parser.get_attribute_count()):
 				attributes_dict[parser.get_attribute_name(idx)] = parser.get_attribute_value(idx)
+			attributes_dict.merge({'shared': []})
 			nodes.merge({attributes_dict.get('id'): attributes_dict})
 		elif node_type == XMLParser.NODE_TEXT:
 			var attributes_dict = {}

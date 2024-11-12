@@ -60,7 +60,6 @@ background_mode = 2
 background_energy_multiplier = 1.05
 sky = SubResource("Sky_hwjky")
 ambient_light_energy = 1.65
-fog_enabled = true
 fog_mode = 1
 fog_density = 1.0
 fog_depth_begin = 0.0
@@ -91,13 +90,13 @@ path_joined = false
 transform = Transform3D(-0.612191, 0, 0.790688, 0, 1, 0, -0.790688, 0, -0.612191, -8.49928, 0, 5.33885)
 progress = 10.05
 
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+script = ExtResource("5_6baf8")
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.999996, 2.28612e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
 far = 250.0
 script = ExtResource("1_nkimv")
-
-[node name="FreeLookCamera" type="Camera3D" parent="."]
-script = ExtResource("5_6baf8")
 
 [node name="VehicleBody3D" type="VehicleBody3D" parent="."]
 transform = Transform3D(0.691727, 0, 0.722159, 0, 1, 0, -0.722159, 0, 0.691727, -3.05284, 1.93441, 47.0473)
@@ -188,3 +187,8 @@ environment = SubResource("Environment_bsqqc")
 transform = Transform3D(0.690067, -0.596867, -0.409338, 0.711306, 0.454899, 0.535827, -0.13361, -0.660921, 0.738466, 0, 0, 0)
 shadow_enabled = true
 shadow_normal_bias = 6.89
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Area3D"]
+polygon = PackedVector2Array(6.38433, 0.542099)

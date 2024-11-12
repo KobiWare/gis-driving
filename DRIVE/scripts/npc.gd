@@ -3,7 +3,7 @@ extends Node3D
 var speed = 1
 var danger = 0
 var backwards
-var road_width
+var road_width = 5
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,11 +16,11 @@ func _ready() -> void:
 	else:
 		backwards = false
 		get_parent().get_parent().h_offset-1
-	road_width = 7
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	get_parent().get_parent().progress -= delta * (speed * cos(rotation.y) / ((danger**2 / 5) + 1))
 	get_parent().get_parent().h_offset += delta * (speed * sin(rotation.y) / ((danger**2 / 5) + 1))
+	road_width = get_parent().get_parent().get_parent().road_width
 
 func _physics_process(delta):
 	var casts = []

@@ -15,7 +15,7 @@ varying vec3 normal;
 void vertex() {
     vertex_pos = VERTEX;
     normal = NORMAL;
-    
+
     // Add vertex displacement based on waves
     float wave = sin(TIME * wave_speed + vertex_pos.y * wave_frequency) * wave_width;
     VERTEX += NORMAL * wave;
@@ -26,34 +26,34 @@ void fragment() {
     vec3 view_dir = normalize(VIEW);
     float rim = 1.0 - abs(dot(view_dir, normal));
     rim = pow(rim, rim_power);
-    
+
     // Create hexagonal pattern
     vec2 hex_uv = vertex_pos.xy * 5.0;
     float hex_pattern = 0.0;
-    
+
     // Animate the pattern
     hex_uv.x += sin(TIME * 0.5) * 0.5;
     hex_uv.y += cos(TIME * 0.3) * 0.5;
-    
+
     // Create base color with waves
     vec3 final_color = base_color.rgb;
     final_color += rim_color.rgb * rim;
-    
+
     // Add scrolling energy lines
     float energy_lines = sin(vertex_pos.y * 20.0 + TIME * 2.0) * 0.5 + 0.5;
     energy_lines *= step(0.97, energy_lines);
     final_color += rim_color.rgb * energy_lines;
-    
+
     // Apply pulsing effect
     float pulse = sin(TIME * 2.0) * 0.5 + 0.5;
     final_color *= (1.0 + pulse * 0.2);
-    
+
     ALBEDO = final_color;
     ALPHA = transparency + rim * 0.5 + energy_lines;
-    
+
     // Add emission
     EMISSION = final_color * (rim * 0.5 + energy_lines);
-    
+
     // Metallic and roughness settings
     METALLIC = 0.8;
     ROUGHNESS = 0.2;

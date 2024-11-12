@@ -19,80 +19,80 @@ uniform vec3 uv1_offset;
 
 // Art deco pattern generation
 float zigzag(vec2 uv, float frequency) {
-    float z = sin(uv.x * frequency) * 0.5 + 0.5;
-    return z;
+\tfloat z = sin(uv.x * frequency) * 0.5 + 0.5;
+\treturn z;
 }
 
 float windowPattern(vec2 uv) {
-    vec2 window_grid = fract(uv * window_frequency);
-    float window = step(0.1, window_grid.x) * step(0.1, window_grid.y);
-    return window;
+\tvec2 window_grid = fract(uv * window_frequency);
+\tfloat window = step(0.1, window_grid.x) * step(0.1, window_grid.y);
+\treturn window;
 }
 
 float artDecoPattern(vec2 uv) {
-    // Create geometric patterns
-    float pattern = 0.0;
-    
-    // Vertical lines
-    pattern += step(0.98, fract(uv.x * pattern_scale));
-    
-    // Horizontal bands
-    pattern += step(0.95, fract(uv.y * (pattern_scale * 0.5)));
-    
-    // Zigzag pattern
-    pattern += zigzag(uv * 2.0, pattern_scale) * 0.3;
-    
-    // Add windows
-    pattern += windowPattern(uv) * 0.5;
-    
-    // Stepped pattern at the top
-    float steps = step(0.95, fract(uv.y * (pattern_scale * 0.25)));
-    pattern += steps;
-    
-    return clamp(pattern, 0.0, 1.0);
+\t// Create geometric patterns
+\tfloat pattern = 0.0;
+\t
+\t// Vertical lines
+\tpattern += step(0.98, fract(uv.x * pattern_scale));
+\t
+\t// Horizontal bands
+\tpattern += step(0.95, fract(uv.y * (pattern_scale * 0.5)));
+\t
+\t// Zigzag pattern
+\tpattern += zigzag(uv * 2.0, pattern_scale) * 0.3;
+\t
+\t// Add windows
+\tpattern += windowPattern(uv) * 0.5;
+\t
+\t// Stepped pattern at the top
+\tfloat steps = step(0.95, fract(uv.y * (pattern_scale * 0.25)));
+\tpattern += steps;
+\t
+\treturn clamp(pattern, 0.0, 1.0);
 }
 
 void vertex() {
-    vec3 normal = NORMAL;
-    
-    TANGENT = vec3(0.0, 0.0, -1.0) * abs(normal.x);
-    TANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.y);
-    TANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.z);
-    TANGENT = normalize(TANGENT);
-    
-    BINORMAL = vec3(0.0, 1.0, 0.0) * abs(normal.x);
-    BINORMAL += vec3(0.0, 0.0, -1.0) * abs(normal.y);
-    BINORMAL += vec3(0.0, 1.0, 0.0) * abs(normal.z);
-    BINORMAL = normalize(BINORMAL);
-    
-    uv1_power_normal = pow(abs(NORMAL), vec3(uv1_blend_sharpness));
-    uv1_triplanar_pos = VERTEX * uv1_scale + uv1_offset;
-    uv1_power_normal /= dot(uv1_power_normal, vec3(1.0));
-    uv1_triplanar_pos *= vec3(1.0, -1.0, 1.0);
+\tvec3 normal = NORMAL;
+\t
+\tTANGENT = vec3(0.0, 0.0, -1.0) * abs(normal.x);
+\tTANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.y);
+\tTANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.z);
+\tTANGENT = normalize(TANGENT);
+\t
+\tBINORMAL = vec3(0.0, 1.0, 0.0) * abs(normal.x);
+\tBINORMAL += vec3(0.0, 0.0, -1.0) * abs(normal.y);
+\tBINORMAL += vec3(0.0, 1.0, 0.0) * abs(normal.z);
+\tBINORMAL = normalize(BINORMAL);
+\t
+\tuv1_power_normal = pow(abs(NORMAL), vec3(uv1_blend_sharpness));
+\tuv1_triplanar_pos = VERTEX * uv1_scale + uv1_offset;
+\tuv1_power_normal /= dot(uv1_power_normal, vec3(1.0));
+\tuv1_triplanar_pos *= vec3(1.0, -1.0, 1.0);
 }
 
 void fragment() {
-    // Generate patterns for each face using triplanar mapping
-    float pattern_front = artDecoPattern(uv1_triplanar_pos.xy);
-    float pattern_side = artDecoPattern(uv1_triplanar_pos.zy);
-    float pattern_top = artDecoPattern(uv1_triplanar_pos.xz);
-    
-    // Combine patterns based on normal weights
-    float final_pattern = pattern_front * uv1_power_normal.z +
-                         pattern_side * uv1_power_normal.x +
-                         pattern_top * uv1_power_normal.y;
-    
-    // Mix colors based on pattern
-    vec3 final_color = mix(primary_color.rgb, secondary_color.rgb, final_pattern);
-    
-    // Add metallic highlights
-    final_color = mix(final_color, metallic_color.rgb, final_pattern * 0.5);
-    
-    ALBEDO = final_color;
-    METALLIC = metallic * final_pattern;
-    ROUGHNESS = roughness + (1.0 - roughness) * (1.0 - final_pattern);
-    
-    // Add slight emission for windows
-    float window_emission = windowPattern(uv1_triplanar_pos.xy) * 0.2;
-    EMISSION = vec3(window_emission);
+\t// Generate patterns for each face using triplanar mapping
+\tfloat pattern_front = artDecoPattern(uv1_triplanar_pos.xy);
+\tfloat pattern_side = artDecoPattern(uv1_triplanar_pos.zy);
+\tfloat pattern_top = artDecoPattern(uv1_triplanar_pos.xz);
+\t
+\t// Combine patterns based on normal weights
+\tfloat final_pattern = pattern_front * uv1_power_normal.z +
+\t\t\t\t\t\t pattern_side * uv1_power_normal.x +
+\t\t\t\t\t\t pattern_top * uv1_power_normal.y;
+\t
+\t// Mix colors based on pattern
+\tvec3 final_color = mix(primary_color.rgb, secondary_color.rgb, final_pattern);
+\t
+\t// Add metallic highlights
+\tfinal_color = mix(final_color, metallic_color.rgb, final_pattern * 0.5);
+\t
+\tALBEDO = final_color;
+\tMETALLIC = metallic * final_pattern;
+\tROUGHNESS = roughness + (1.0 - roughness) * (1.0 - final_pattern);
+\t
+\t// Add slight emission for windows
+\tfloat window_emission = windowPattern(uv1_triplanar_pos.xy) * 0.2;
+\tEMISSION = vec3(window_emission);
 }
