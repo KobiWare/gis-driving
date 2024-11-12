@@ -50,6 +50,5 @@ func despawn_npcs():
 
 func _process(delta: float) -> void:
 	if len(npcs) < maxNPCs:
-		print(len(npcs))
 		new_npcs(maxNPCs - len(npcs))
 	#despawn_npcs()

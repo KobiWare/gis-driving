@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://daw3nqh2wyymw"]
+[gd_scene load_steps=23 format=3 uid="uid://daw3nqh2wyymw"]
 
 [ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
@@ -8,7 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="5_twma2"]
 [ext_resource type="Script" path="res://scripts/OSMs.gd" id="6_w6mhn"]
 [ext_resource type="Texture2D" uid="uid://e16neowogqvh" path="res://assets/materials/roads/grass.jpg" id="7_aw0vu"]
+[ext_resource type="Script" path="res://scripts/map.gd" id="7_n2uuy"]
 [ext_resource type="Script" path="res://scripts/npcs.gd" id="9_ey133"]
+[ext_resource type="Script" path="res://scripts/terrain.gd" id="10_1uu1d"]
 
 [sub_resource type="Curve3D" id="Curve3D_sdda2"]
 bake_interval = 0.5
@@ -168,12 +170,17 @@ shape = SubResource("ConvexPolygonShape3D_tc1yr")
 script = ExtResource("6_w6mhn")
 tile_size = 0.002
 
-[node name="OSM" type="Node3D" parent="OSMs"]
-script = ExtResource("4_f5nvx")
-is_first = true
+[node name="Map" type="Node3D" parent="OSMs"]
+script = ExtResource("7_n2uuy")
 
-[node name="NPCS" type="Node3D" parent="OSMs/OSM"]
+[node name="OSM" type="Node3D" parent="OSMs/Map"]
+script = ExtResource("4_f5nvx")
+
+[node name="NPCS" type="Node3D" parent="OSMs/Map/OSM"]
 script = ExtResource("9_ey133")
+
+[node name="Terrain" type="Node3D" parent="OSMs/Map"]
+script = ExtResource("10_1uu1d")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)

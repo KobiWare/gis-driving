@@ -171,9 +171,7 @@ func make(way):
 	for i in way.nodes:
 		for shared in i['shared']:
 			if shared.type == 'Road' and road_width >= 3:
-				print("INTERSECTION")
 				var intersectionPolygon = calculate_intersection_polygon(i, shared)
-				print(i)
 				var csg = CSGPolygon3D.new()
 				csg.polygon = intersectionPolygon
 				csg.depth = 50
