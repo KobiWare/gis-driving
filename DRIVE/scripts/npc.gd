@@ -7,7 +7,7 @@ var road_width
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	get_parent().get_parent().v_offset = 1.2
+	get_parent().get_parent().v_offset = 1.1
 	get_parent().get_parent().h_offset = randf_range(-4, 4)
 	speed *= randf_range(3, 4.5)
 	if randi_range(0,1) == 0:

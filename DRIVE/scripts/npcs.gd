@@ -2,7 +2,7 @@ extends Node3D
 
 var camera
 var minDist = 10
-var maxDist = 20
+var maxDist = 2000
 var npc = preload("res://assets/car/npc_vehicle.tscn")
 var npcs = []
 var maxNPCs = 50
@@ -12,40 +12,31 @@ func _ready() -> void:
 	camera = get_node("/root/Node3D/Camera3D") as Camera3D
 	
 
-func new_npc(targetDistance) -> void:
-	var osm = get_node("/root/Node3D/OSMs/OSM")
+func new_npc() -> void:
+	var osm = get_parent()
 	if osm.is_loaded:
-		var targetAngledPoint = randf_range(0, PI)
-		var targetPoint = Vector3(cos(targetAngledPoint) * targetDistance, 0, sin(targetAngledPoint) * targetDistance) + camera.global_position
-		
-		var closestPoint = null
-		var closestPath = null
-		
-		for child in osm.get_children():
-			if child.get_child_count() > 0:
-				var childschild = child.get_child(0)
-				var spawnableRoadTypes = ['residential', "secondary"]
-				if childschild != null and childschild.is_class("Path3D"):
-					if childschild.road_type in spawnableRoadTypes:
-						var closest = childschild.curve.get_closest_point(targetPoint)
-						if closestPoint == null or targetPoint.distance_to(closest) < targetPoint.distance_to(closestPoint):
-							closestPoint = closest
-							closestPath = childschild
+		var child = null
+		var childschild = null
+		while true:
+			child = osm.get_child(randi_range(0, osm.get_child_count()-1))
+			childschild  = child.get_child(0)
 			
+			var spawnableRoadTypes = ['residential', "secondary"]
+			if childschild != null and childschild.is_class("Path3D"):
+				if childschild.road_type in spawnableRoadTypes and len(childschild.way.nodes) > 1:
+					break
 		var new_npc = npc.instantiate()
 		var path_mover = PathFollow3D.new()
 		
+		path_mover.progress = randf_range(0, 1) * childschild.curve.get_baked_length()
 		path_mover.add_child(new_npc)
-		
-		path_mover.progress = closestPath.curve.get_closest_offset(closestPoint)
 		#new_npc.global_position = closestPoint + Vector3(0,1.5,0)
 		npcs.append(path_mover)
-		closestPath.add_child(path_mover)
-		print("Children")
+		childschild.add_child(path_mover)
 
 func new_npcs(count):
 	for i in range(count):
-		new_npc(minDist + len(npcs) * ((maxDist - minDist) / count))
+		new_npc()
 
 func despawn_npcs():
 	var i = 0
@@ -59,5 +50,6 @@ func despawn_npcs():
 
 func _process(delta: float) -> void:
 	if len(npcs) < maxNPCs:
+		print(len(npcs))
 		new_npcs(maxNPCs - len(npcs))
-	despawn_npcs()
+	#despawn_npcs()

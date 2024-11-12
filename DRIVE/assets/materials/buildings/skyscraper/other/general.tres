@@ -5,14 +5,14 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_jyi4n")
-shader_parameter/base_color = Color(0.361539, 0.345025, 0.144579, 1)
-shader_parameter/trim_color = Color(0.8, 0.6, 0.2, 1)
+shader_parameter/base_color = Color(0.377232, 0.335924, 0.183132, 1)
+shader_parameter/trim_color = Color(0.77692, 0.604726, 0.344945, 1)
 shader_parameter/roughness = 0.715
 shader_parameter/metallic = 0.465
 shader_parameter/specular = 0.435
 shader_parameter/window_frequency = 0.2
 shader_parameter/floor_height = 2.0
-shader_parameter/art_deco_pattern_scale = 0.1
+shader_parameter/art_deco_pattern_scale = 0.47
 shader_parameter/uv1_blend_sharpness = null
 shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = null

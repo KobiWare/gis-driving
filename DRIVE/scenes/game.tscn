@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://daw3nqh2wyymw"]
+[gd_scene load_steps=21 format=3 uid="uid://daw3nqh2wyymw"]
 
 [ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="5_twma2"]
 [ext_resource type="Script" path="res://scripts/OSMs.gd" id="6_w6mhn"]
 [ext_resource type="Texture2D" uid="uid://e16neowogqvh" path="res://assets/materials/roads/grass.jpg" id="7_aw0vu"]
-[ext_resource type="Material" uid="uid://mq6vrepyvhnq" path="res://assets/materials/buildings/skyscraper/other/general.tres" id="7_im2mr"]
 [ext_resource type="Script" path="res://scripts/npcs.gd" id="9_ey133"]
 
 [sub_resource type="Curve3D" id="Curve3D_sdda2"]
@@ -61,8 +60,11 @@ background_mode = 2
 background_energy_multiplier = 1.05
 sky = SubResource("Sky_hwjky")
 ambient_light_energy = 1.65
+fog_enabled = true
 fog_mode = 1
-fog_density = 0.125
+fog_density = 1.0
+fog_depth_begin = 0.0
+fog_depth_end = 250.0
 volumetric_fog_density = 0.0
 
 [node name="Node3D" type="Node3D"]
@@ -91,6 +93,7 @@ progress = 10.05
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.999996, 2.28612e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
+far = 250.0
 script = ExtResource("1_nkimv")
 
 [node name="FreeLookCamera" type="Camera3D" parent="."]
@@ -165,6 +168,9 @@ tile_size = 0.002
 script = ExtResource("4_f5nvx")
 is_first = true
 
+[node name="NPCS" type="Node3D" parent="OSMs/OSM"]
+script = ExtResource("9_ey133")
+
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 sorting_offset = -60.0
@@ -182,12 +188,3 @@ environment = SubResource("Environment_bsqqc")
 transform = Transform3D(0.690067, -0.596867, -0.409338, 0.711306, 0.454899, 0.535827, -0.13361, -0.660921, 0.738466, 0, 0, 0)
 shadow_enabled = true
 shadow_normal_bias = 6.89
-
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 18.3052, 0)
-polygon = PackedVector2Array(0, 0, 0, 20, 20, 20, 20, 0)
-depth = 20.0
-material = ExtResource("7_im2mr")
-
-[node name="NPCS" type="Node3D" parent="."]
-script = ExtResource("9_ey133")
