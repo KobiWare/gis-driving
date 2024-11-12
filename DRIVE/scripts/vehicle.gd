@@ -28,8 +28,9 @@ func _process(delta):
 		self.rotation = Vector3(0, 46.2, 0)
 		
 	if Input.is_action_just_pressed("cycle_view_distance"):
-		if view_distance < 1:
-			view_distance += 0.125
+		if view_distance < 125:
+			view_distance += 25
 		else:
-			view_distance = 0
-		environment.environment.fog_density = view_distance
+			view_distance = 25
+		environment.environment.fog_depth_end = view_distance
+		get_node("/root/Node3D/Camera3D").far = view_distance

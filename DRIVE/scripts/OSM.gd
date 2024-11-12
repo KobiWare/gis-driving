@@ -93,12 +93,7 @@ class Way extends Buildable:
 		# Build csg
 		for i in nodes:
 			# Construct coordinates
-			var coords = Globals.LatLong.new(
-				Vector2(
-					float(i['lat']),
-					float(i['lon'])
-				)
-			)
+			var coords = i['latlon']
 			var coordsFeet = coords.toMeters()
 			polygon.append(coordsFeet)
 		

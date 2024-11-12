@@ -131,17 +131,28 @@ func get_road_direction_at_node(node):
 	
 	if node_index > 0:
 		var prev_node = way.nodes[node_index - 1]
-		direction += Vector2(
+		var directionBackwards = node['latlon'].toMeters() - prev_node['latlon'].toMeters()
+		var directionCorrected = Vector2(directionBackwards.y, directionBackwards.x)
+		direction += directionCorrected
+		"""
+		Vector2(
 			float(node['lon']) - float(prev_node['lon']),
 			float(node['lat']) - float(prev_node['lat'])
 		)
+		"""
 	
 	if node_index < way.nodes.size() - 1:
 		var next_node = way.nodes[node_index + 1]
-		direction += Vector2(
+		var directionBackwards =  next_node['latlon'].toMeters() - node['latlon'].toMeters()
+		var directionCorrected = Vector2(directionBackwards.y, directionBackwards.x)
+		direction += directionCorrected
+		
+		"""
+		Vector2(
 			float(next_node['lon']) - float(node['lon']),
 			float(next_node['lat']) - float(node['lat'])
 		)
+		"""
 	
 	return direction.normalized()
 

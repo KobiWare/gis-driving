@@ -2,10 +2,10 @@ extends Node3D
 
 var camera
 var minDist = 10
-var maxDist = 2000
+var maxDist = 200
 var npc = preload("res://assets/car/npc_vehicle.tscn")
 var npcs = []
-var maxNPCs = 50
+var maxNPCs = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
