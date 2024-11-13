@@ -7,7 +7,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_i43d1"]
 size = Vector3(1.05835, 1, 2.05811)
 
-[node name="NPC vehicle" type="Node3D"]
+[node name="NPC vehicle2" type="Node3D"]
 
 [node name="Vehicle" type="StaticBody3D" parent="."]
 script = ExtResource("1_lbahl")
