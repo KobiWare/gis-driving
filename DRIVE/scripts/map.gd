@@ -17,8 +17,8 @@ func _on_request_completed(result, response_code, headers, body):
 		xml_file.store_string(body.get_string_from_utf8())
 		xml_file.close()
 		print("Request complete")
-		get_child(0).parse()
-		get_child(0).is_loaded = true
+		get_child(0).get_child(0).parse()
+		get_child(0).get_child(0).is_loaded = true
 	else:
 		print("Request failed with response code: ", response_code)
 
@@ -33,7 +33,7 @@ func request_data_parse():
 	add_child(requester_instance)
 
 func generate_terrain():
-	get_child(1).generate_terrain()
+	get_child(0).generate_terrain()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

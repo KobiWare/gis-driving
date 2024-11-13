@@ -1,14 +1,33 @@
 extends Node3D
 
 const grass = preload("res://assets/materials/terrain/grass.tres")
+var points = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 
+# TODO: Interperlation
+func get_elevation_at_xz(position: Vector2):
+	var index = Vector2(int(len(points[0])/2), int(len(points)/2))
+	var binary_search = len(points) / 4.0
+	var point = null
+	while binary_search > 0.2:
+		point = points[round(index.y)][round(index.x)]
+		if point.z < position.x:
+			index.x += binary_search
+		else:
+			index.x -= binary_search
+		
+		if point.x < position.y:
+			index.y += binary_search
+		else:
+			index.y -= binary_search
+		binary_search /= 2.0
+	return point.y
+
 func generate_terrain():
 	var terrain = ArrayMesh.new()
-	var points = []
 	var lat_start = get_parent().lat1
 	var lat_end = get_parent().lat2
 	var lon_start = get_parent().lon1
@@ -22,7 +41,7 @@ func generate_terrain():
 		while lat < lat_end:
 			var newPoint = Globals.LatLongHeight.new(
 					Vector2(lon, lat), 
-					(cos(lon * 5000) * cos(lat * 5000) * 4) + 10
+					(cos(lon * 5000) * cos(lat * 5000) * 4)
 				)
 			lat_points.append(
 				newPoint.toMeters3D()

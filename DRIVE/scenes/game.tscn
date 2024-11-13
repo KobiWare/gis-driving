@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://daw3nqh2wyymw"]
+[gd_scene load_steps=19 format=3 uid="uid://daw3nqh2wyymw"]
 
 [ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://scripts/map.gd" id="7_n2uuy"]
 [ext_resource type="Script" path="res://scripts/npcs.gd" id="9_ey133"]
 [ext_resource type="Script" path="res://scripts/terrain.gd" id="10_1uu1d"]
-[ext_resource type="Material" uid="uid://bhoojiqc44ku2" path="res://assets/materials/terrain/grass.tres" id="11_y8jm0"]
 
 [sub_resource type="Curve3D" id="Curve3D_sdda2"]
 bake_interval = 0.5
@@ -26,14 +25,6 @@ bounce = 0.05
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tc1yr"]
 points = PackedVector3Array(0.5, 0.4, 1, 0.5, -0.4, 1, 0.5, 0.4, -1, -0.5, 0.4, 1, -0.5, -0.4, 1, 0.5, -0.4, -1, -0.5, 0.4, -1, -0.5, -0.4, -1)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_l3jll"]
-lightmap_size_hint = Vector2i(1, 1)
-material = ExtResource("11_y8jm0")
-size = Vector2(1000, 1000)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3gkbf"]
-data = PackedVector3Array(5555.5, 0, 5555.5, -5555.5, 0, 5555.5, 5555.5, 0, -5555.5, -5555.5, 0, 5555.5, -5555.5, 0, -5555.5, 5555.5, 0, -5555.5)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sjgc5"]
 
@@ -170,24 +161,14 @@ tile_size = 0.002
 script = ExtResource("7_n2uuy")
 is_first = true
 
-[node name="OSM" type="Node3D" parent="OSMs/Map"]
-script = ExtResource("4_f5nvx")
-
-[node name="NPCS" type="Node3D" parent="OSMs/Map/OSM"]
-script = ExtResource("9_ey133")
-
 [node name="Terrain" type="Node3D" parent="OSMs/Map"]
 script = ExtResource("10_1uu1d")
 
-[node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
-sorting_offset = -60.0
-mesh = SubResource("PlaneMesh_l3jll")
+[node name="OSM" type="Node3D" parent="OSMs/Map/Terrain"]
+script = ExtResource("4_f5nvx")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_3gkbf")
+[node name="NPCS" type="Node3D" parent="OSMs/Map/Terrain/OSM"]
+script = ExtResource("9_ey133")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_bsqqc")

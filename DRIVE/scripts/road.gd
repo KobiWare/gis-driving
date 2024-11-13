@@ -186,7 +186,7 @@ func make(way):
 			)
 		)
 		var coordsFeet = coords.toMeters()
-		var coordsAndElevation = Vector3(coordsFeet.x, -1, coordsFeet.y)
+		var coordsAndElevation = Vector3(coordsFeet.x, get_parent().get_parent().get_parent().get_elevation_at_xz(coordsFeet), coordsFeet.y)
 		self.curve.add_point(coordsAndElevation)
 		
 		i['shared'].append(self)
