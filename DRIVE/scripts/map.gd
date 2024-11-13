@@ -24,19 +24,11 @@ func _on_request_completed(result, response_code, headers, body):
 
 func request_data_parse():
 	var requester_instance = dataRequester.instantiate()
-	
-	if is_first:
-		var tile_size = get_parent().get_parent().tile_size
-		var rel_pos = Globals.LatLong.relPos
-		requester_instance.lat1 = rel_pos.y - tile_size
-		requester_instance.lat2 = rel_pos.y + tile_size
-		requester_instance.lon1 = rel_pos.x - tile_size
-		requester_instance.lon2 = rel_pos.x + tile_size
-	else:
-		requester_instance.lat1 = lat1
-		requester_instance.lat2 = lat2
-		requester_instance.lon1 = lon1
-		requester_instance.lon2 = lon2
+
+	requester_instance.lat1 = lat1
+	requester_instance.lat2 = lat2
+	requester_instance.lon1 = lon1
+	requester_instance.lon2 = lon2
 	
 	add_child(requester_instance)
 
@@ -45,5 +37,12 @@ func generate_terrain():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if is_first:
+		var rel_pos = Globals.LatLong.relPos
+		var tile_size = get_parent().tile_size
+		lat1 = rel_pos.y - tile_size
+		lat2 = rel_pos.y + tile_size
+		lon1 = rel_pos.x - tile_size
+		lon2 = rel_pos.x + tile_size
 	generate_terrain()
 	request_data_parse()

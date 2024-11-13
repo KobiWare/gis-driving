@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://daw3nqh2wyymw"]
+[gd_scene load_steps=22 format=3 uid="uid://daw3nqh2wyymw"]
 
 [ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
@@ -7,10 +7,10 @@
 [ext_resource type="Script" path="res://scripts/orbitcamera.gd" id="5_6baf8"]
 [ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="5_twma2"]
 [ext_resource type="Script" path="res://scripts/OSMs.gd" id="6_w6mhn"]
-[ext_resource type="Texture2D" uid="uid://e16neowogqvh" path="res://assets/materials/roads/grass.jpg" id="7_aw0vu"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="7_n2uuy"]
 [ext_resource type="Script" path="res://scripts/npcs.gd" id="9_ey133"]
 [ext_resource type="Script" path="res://scripts/terrain.gd" id="10_1uu1d"]
+[ext_resource type="Material" uid="uid://bhoojiqc44ku2" path="res://assets/materials/terrain/grass.tres" id="11_y8jm0"]
 
 [sub_resource type="Curve3D" id="Curve3D_sdda2"]
 bake_interval = 0.5
@@ -27,13 +27,9 @@ bounce = 0.05
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tc1yr"]
 points = PackedVector3Array(0.5, 0.4, 1, 0.5, -0.4, 1, 0.5, 0.4, -1, -0.5, 0.4, 1, -0.5, -0.4, 1, 0.5, -0.4, -1, -0.5, 0.4, -1, -0.5, -0.4, -1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4q4rv"]
-albedo_texture = ExtResource("7_aw0vu")
-uv1_scale = Vector3(500, 500, 500)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_l3jll"]
 lightmap_size_hint = Vector2i(1, 1)
-material = SubResource("StandardMaterial3D_4q4rv")
+material = ExtResource("11_y8jm0")
 size = Vector2(1000, 1000)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3gkbf"]
@@ -68,7 +64,7 @@ ambient_light_energy = 1.65
 fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.417364, 0.5385, 0.560981, 1)
-fog_density = 1.0
+fog_density = 0.0
 fog_depth_begin = 0.0
 fog_depth_end = 75.0
 volumetric_fog_density = 0.0
@@ -97,13 +93,13 @@ path_joined = false
 transform = Transform3D(-0.577424, 0, 0.816424, 0, 1, 0, -0.816424, 0, -0.577424, -8.76091, 0, 4.89414)
 progress = 10.05
 
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+script = ExtResource("5_6baf8")
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.999996, 2.28612e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
 far = 75.0
 script = ExtResource("1_nkimv")
-
-[node name="FreeLookCamera" type="Camera3D" parent="."]
-script = ExtResource("5_6baf8")
 
 [node name="VehicleBody3D" type="VehicleBody3D" parent="."]
 transform = Transform3D(0.691727, 0, 0.722159, 0, 1, 0, -0.722159, 0, 0.691727, -3.05284, 1.93441, 47.0473)
@@ -172,6 +168,7 @@ tile_size = 0.002
 
 [node name="Map" type="Node3D" parent="OSMs"]
 script = ExtResource("7_n2uuy")
+is_first = true
 
 [node name="OSM" type="Node3D" parent="OSMs/Map"]
 script = ExtResource("4_f5nvx")

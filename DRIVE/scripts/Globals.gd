@@ -11,3 +11,15 @@ class LatLong:
 	# TODO: I have no idea how to actually calculate this lmao
 	func toMeters() -> Vector2:
 		return (self.pos - relPos) * 100000
+
+class LatLongHeight extends LatLong:
+	var height
+	
+	func _init(pos: Vector2, height: float) -> void:
+		self.pos = pos
+		self.height = height
+	
+	# TODO: I have no idea how to actually calculate this lmao
+	func toMeters3D() -> Vector3:
+		var latlon = super.toMeters()
+		return Vector3(latlon.x, self.height, latlon.y)
