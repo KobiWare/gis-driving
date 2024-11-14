@@ -1,0 +1,184 @@
+[gd_scene load_steps=19 format=3 uid="uid://daw3nqh2wyymw"]
+
+[ext_resource type="Script" path="res://scripts/vehicle.gd" id="1_ckmx1"]
+[ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_nkimv"]
+[ext_resource type="Script" path="res://scripts/OSM.gd" id="4_f5nvx"]
+[ext_resource type="PackedScene" uid="uid://c0dfjhuaeg5jl" path="res://assets/car/ford-model-t-v2-downloadable/source/car_base.tscn" id="4_jm1g3"]
+[ext_resource type="Script" path="res://scripts/orbitcamera.gd" id="5_6baf8"]
+[ext_resource type="PackedScene" uid="uid://cjn4o71rfrneh" path="res://assets/car/ford-model-t-v2-downloadable/source/wheel.tscn" id="5_twma2"]
+[ext_resource type="Script" path="res://scripts/OSMs.gd" id="6_w6mhn"]
+[ext_resource type="Script" path="res://scripts/map.gd" id="7_n2uuy"]
+[ext_resource type="Script" path="res://scripts/npcs.gd" id="9_ey133"]
+[ext_resource type="Script" path="res://scripts/terrain.gd" id="10_1uu1d"]
+
+[sub_resource type="Curve3D" id="Curve3D_sdda2"]
+bake_interval = 0.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, -66, 0, -2.995, 0, 0, 0, 22, 0, 22),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7jt1i"]
+friction = 0.2
+bounce = 0.05
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tc1yr"]
+points = PackedVector3Array(0.5, 0.4, 1, 0.5, -0.4, 1, 0.5, 0.4, -1, -0.5, 0.4, 1, -0.5, -0.4, 1, 0.5, -0.4, -1, -0.5, 0.4, -1, -0.5, -0.4, -1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sjgc5"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qt0hq"]
+noise = SubResource("FastNoiseLite_sjgc5")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pjkgw"]
+sky_top_color = Color(0.408122, 0.557047, 0.640114, 1)
+sky_curve = 0.0375001
+sky_cover = SubResource("NoiseTexture2D_qt0hq")
+sky_cover_modulate = Color(0.593134, 0.593134, 0.593133, 1)
+ground_bottom_color = Color(0.647059, 0.654902, 0.670588, 1)
+ground_horizon_color = Color(0.320459, 0.426124, 0.447534, 1)
+ground_curve = 5.88134
+sun_angle_max = 17.05
+sun_curve = 0.31058
+energy_multiplier = 1.6
+
+[sub_resource type="Sky" id="Sky_hwjky"]
+sky_material = SubResource("ProceduralSkyMaterial_pjkgw")
+radiance_size = 1
+
+[sub_resource type="Environment" id="Environment_bsqqc"]
+background_mode = 2
+background_energy_multiplier = 1.05
+sky = SubResource("Sky_hwjky")
+ambient_light_energy = 1.65
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.417364, 0.5385, 0.560981, 1)
+fog_density = 0.0
+fog_depth_begin = 0.0
+fog_depth_end = 75.0
+volumetric_fog_density = 0.0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="testRoad" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.16583, 7.77551, 0)
+curve = SubResource("Curve3D_sdda2")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="testRoad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.16583, -7.77551, 0)
+polygon = PackedVector2Array(0, 0, -1, 1, 1, 1, 0, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+
+[node name="PathFollow3D" type="PathFollow3D" parent="testRoad"]
+transform = Transform3D(-0.577424, 0, 0.816424, 0, 1, 0, -0.816424, 0, -0.577424, -8.76091, 0, 4.89414)
+progress = 10.05
+
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+script = ExtResource("5_6baf8")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.999996, 2.28612e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
+far = 75.0
+script = ExtResource("1_nkimv")
+
+[node name="VehicleBody3D" type="VehicleBody3D" parent="."]
+transform = Transform3D(0.691727, 0, 0.722159, 0, 1, 0, -0.722159, 0, 0.691727, -3.05284, 1.93441, 47.0473)
+mass = 500.0
+physics_material_override = SubResource("PhysicsMaterial_7jt1i")
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, 0.3, 0)
+script = ExtResource("1_ckmx1")
+
+[node name="VehicleBody" parent="VehicleBody3D" instance=ExtResource("4_jm1g3")]
+transform = Transform3D(0.55, 0, 0, 0, 0.55, 0, 0, 0, 0.55, -0.149645, 0, 0.072197)
+
+[node name="VehicleWheel3D" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -0.636804, 0.637618, 0.868846)
+use_as_traction = true
+use_as_steering = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_014" parent="VehicleBody3D/VehicleWheel3D" instance=ExtResource("5_twma2")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="VehicleWheel3D3" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0.370991, 0.637618, 0.868846)
+use_as_traction = true
+use_as_steering = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_015" parent="VehicleBody3D/VehicleWheel3D3" instance=ExtResource("5_twma2")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="VehicleWheel3D2" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -0.636804, 0.637618, -0.735941)
+use_as_traction = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_014" parent="VehicleBody3D/VehicleWheel3D2" instance=ExtResource("5_twma2")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="VehicleWheel3D4" type="VehicleWheel3D" parent="VehicleBody3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0.370991, 0.637618, -0.735941)
+use_as_traction = true
+wheel_radius = 0.3
+wheel_rest_length = 0.5
+suspension_travel = 1.0
+suspension_stiffness = 25.0
+
+[node name="Cylinder_014" parent="VehicleBody3D/VehicleWheel3D4" instance=ExtResource("5_twma2")]
+transform = Transform3D(55, 0, 0, 0, -2.40413e-06, 55, 0, -55, -2.40413e-06, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VehicleBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.153597, 0.638837, 0)
+shape = SubResource("ConvexPolygonShape3D_tc1yr")
+
+[node name="OSMs" type="Node" parent="."]
+script = ExtResource("6_w6mhn")
+tile_size = 0.002
+
+[node name="Map" type="Node3D" parent="OSMs"]
+script = ExtResource("7_n2uuy")
+is_first = true
+
+[node name="Terrain" type="Node3D" parent="OSMs/Map"]
+script = ExtResource("10_1uu1d")
+
+[node name="OSM" type="Node3D" parent="OSMs/Map/Terrain"]
+script = ExtResource("4_f5nvx")
+
+[node name="NPCS" type="Node3D" parent="OSMs/Map/Terrain/OSM"]
+script = ExtResource("9_ey133")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bsqqc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.690067, -0.596867, -0.409338, 0.711306, 0.454899, 0.535827, -0.13361, -0.660921, 0.738466, 0, 0, 0)
+shadow_enabled = true
+shadow_normal_bias = 6.89
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Area3D"]
+polygon = PackedVector2Array(6.38433, 0.542099)

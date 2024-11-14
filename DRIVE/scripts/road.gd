@@ -191,6 +191,17 @@ func make(way):
 		
 		i['shared'].append(self)
 	
+	self.curve.bake_interval = 1.0
+	var new_points = self.curve.get_baked_points()
+	self.curve.clear_points()
+	
+	# Adjust the height
+	for point in new_points:
+		point.y = get_parent().get_parent().get_parent().get_elevation_at_xz(
+			Vector2(point.x, point.z)
+		)
+		self.curve.add_point(point)
+	
 	# CSG polygon
 	var csg = CSGPolygon3D.new()
 	csg.mode = CSGPolygon3D.MODE_PATH

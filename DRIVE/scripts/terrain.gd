@@ -6,14 +6,13 @@ var points = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
-
-# TODO: Interperlation
 func get_elevation_at_xz(position: Vector2):
-	var index = Vector2(int(len(points[0])/2), int(len(points)/2))
+	var index = Vector2(len(points[0])/2.0, len(points)/2.0)
 	var binary_search = len(points) / 4.0
 	var point = null
-	while binary_search > 0.2:
+	while binary_search > 0.001:
 		point = points[round(index.y)][round(index.x)]
+		
 		if point.z < position.x:
 			index.x += binary_search
 		else:
@@ -24,7 +23,25 @@ func get_elevation_at_xz(position: Vector2):
 		else:
 			index.y -= binary_search
 		binary_search /= 2.0
-	return point.y
+	
+	# Bilinear interpolation
+	var x1 = floor(index.x)
+	var x2 = ceil(index.x)
+	var y1 = floor(index.y)
+	var y2 = ceil(index.y)
+	
+	var Q11 = points[y1][x1].y
+	var Q21 = points[y1][x2].y
+	var Q12 = points[y2][x1].y
+	var Q22 = points[y2][x2].y
+	
+	var R1 = ((x2 - index.x) / (x2 - x1)) * Q11 + ((index.x - x1) / (x2 - x1)) * Q21
+	var R2 = ((x2 - index.x) / (x2 - x1)) * Q12 + ((index.x - x1) / (x2 - x1)) * Q22
+	
+	var P = ((y2 - index.y) / (y2 - y1)) * R1 + ((index.y - y1) / (y2 - y1)) * R2
+	
+	return P
+
 
 func generate_terrain():
 	var terrain = ArrayMesh.new()
@@ -77,7 +94,7 @@ func generate_terrain():
 	arrays[Mesh.ARRAY_VERTEX] = triangles
 	arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	
-				
+	
 	var mesh_instance = MeshInstance3D.new()
 	mesh_instance.mesh = arr_mesh
 	print(len(points), " ", len(points[0]))
