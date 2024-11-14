@@ -43,15 +43,15 @@ func get_elevation_at_xz(position: Vector2):
 	while binary_search > 0.01:
 		point = get_terrain(index)
 		
-		if point.z < position.x:
-			index.x += binary_search
-		else:
-			index.x -= binary_search
-		
-		if point.x < position.y:
+		if point.x < position.x:
 			index.y += binary_search
 		else:
 			index.y -= binary_search
+		
+		if point.z < position.y:
+			index.x += binary_search
+		else:
+			index.x -= binary_search
 		binary_search /= 2.0
 	
 	return point.y
@@ -72,7 +72,7 @@ func generate_terrain():
 		while lat < lat_end:
 			var newPoint = Globals.LatLongHeight.new(
 					Vector2(lon, lat), 
-					(cos(lon * 10000) * cos(lat * 10000) * 40)
+					(cos(lon * 3000) * cos(lat * 3000) * 40)
 				)
 			lat_points.append(
 				newPoint.toMeters3D()

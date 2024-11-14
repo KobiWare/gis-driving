@@ -69,7 +69,6 @@ class Way extends Buildable:
 		path.make(self)
 	
 	func constructBuilding(type, levels=-1) -> void:
-		
 		if levels == -1:
 			if type == 'office':
 				levels = int(8.0 / randf_range(0.2,1))
@@ -82,12 +81,19 @@ class Way extends Buildable:
 		var polygon = PackedVector2Array()
 		csg.set_use_collision(true)
 		
+		var centerBuilding = Vector2()
 		# Build csg
 		for i in nodes:
 			# Construct coordinates
 			var coords = i['latlon']
 			var coordsFeet = coords.toMeters()
+			centerBuilding += coordsFeet
 			polygon.append(coordsFeet)
+		centerBuilding /= len(nodes)
+		
+		var csg_wrapper = Node3D.new()
+		csg_wrapper.global_position.y = get_parent().get_parent().get_elevation_at_xz(centerBuilding)
+		
 		
 		csg.polygon = polygon
 		csg.rotation.x = PI / 2
@@ -103,8 +109,9 @@ class Way extends Buildable:
 		topCsg.material = skyscraperMainMaterial
 		
 		csg.add_child(topCsg)
+		csg_wrapper.add_child(csg)
 		
-		get_node("./").add_child(csg)
+		get_node("./").add_child(csg_wrapper)
 
 func parse():
 	var parser = XMLParser.new()

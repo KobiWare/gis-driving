@@ -175,6 +175,7 @@ func make(way):
 				var csg = CSGPolygon3D.new()
 				csg.polygon = intersectionPolygon
 				csg.depth = 50
+				csg.global_position.y = get_parent().get_parent().get_parent().get_elevation_at_xz(i['latlon'].toMeters())
 				csg.rotation.x = PI / 2
 				add_child(csg)
 		
@@ -192,7 +193,7 @@ func make(way):
 		i['shared'].append(self)
 	
 	self.curve.bake_interval = 5
-	self.curve.up_vector_enabled = false
+	#self.curve.up_vector_enabled = false
 	var new_points = self.curve.get_baked_points()
 	self.curve.clear_points()
 	

@@ -1,8 +1,8 @@
 extends Node
 class LatLong:
 	# NOTE: Backwards
-	static var relPos = Vector2(38.6334750, -84.6633720)
-	#static var relPos = Vector2(40.73575, -74.06416)
+	#static var relPos = Vector2(38.6334750, -84.6633720)
+	static var relPos = Vector2(40.73575, -74.06416)
 	var pos
 
 	func _init(pos: Vector2) -> void:
