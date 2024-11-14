@@ -191,7 +191,8 @@ func make(way):
 		
 		i['shared'].append(self)
 	
-	self.curve.bake_interval = 1.0
+	self.curve.bake_interval = 5
+	self.curve.up_vector_enabled = false
 	var new_points = self.curve.get_baked_points()
 	self.curve.clear_points()
 	
@@ -210,7 +211,7 @@ func make(way):
 	for i in csg.polygon:
 		i.x -= 0.5
 		if(i.y == 0):
-			resizedPolygon.append(Vector2(i.x*road_width*1.1, i.y+0.9))
+			resizedPolygon.append(Vector2(i.x*road_width*1.2, i.y+0))
 		else:
 			resizedPolygon.append(Vector2(i.x*road_width, i.y + road_width/300.0 + randf_range(0.0, 0.001)))
 	csg.polygon = resizedPolygon
