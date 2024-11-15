@@ -1,10 +1,12 @@
 extends Node
 class_name Road
 
+const road_sign = preload("res://scenes/Point.tscn")
+
 var way
 var road_type
 var road_width
-const type = "Road"
+var type = "Road"
 
 const roadTextures = [
 	preload("res://assets/materials/roads/primary.tres"),
@@ -77,14 +79,18 @@ func getRoadMaterial(val):
 			return roadTextures[0]
 		"tertiary_link":
 			return roadTextures[0]
+	
+	return roadTextures[1]
 
 func initRoadType():
 	for tag in way.tags:
 		if tag['k'] == 'highway':
 			road_type = tag['v']
-			return
+		elif tag['k'] == "name":
+			self.name = tag['v']
+		
 
-func calculate_intersection_polygon(shared_node, other_road):
+func calculate_intersection_polygon(shared_node, other_road) -> PackedVector2Array:
 	# Shared node as lat long
 	var shared_node_position = shared_node['latlon'].toMeters()
 	
@@ -170,14 +176,23 @@ func make(way):
 	
 	for i in way.nodes:
 		for shared in i['shared']:
-			if shared.type == 'Road' and road_width >= 3:
+			# TODO: Do something with intersections
+			if shared.type == 'Road' and road_width >= 5:
 				var intersectionPolygon = calculate_intersection_polygon(i, shared)
 				var csg = CSGPolygon3D.new()
 				csg.polygon = intersectionPolygon
-				csg.depth = 50
-				csg.global_position.y = get_parent().get_parent().get_parent().get_elevation_at_xz(i['latlon'].toMeters())
+				csg.depth = 0
+				var height = get_parent().get_parent().get_parent().get_elevation_at_xz(i['latlon'].toMeters())
+				csg.global_position.y = height
 				csg.rotation.x = PI / 2
 				add_child(csg)
+				
+				# Add props
+				for j in intersectionPolygon:
+					if randi_range(0,10) == 0:
+						var sign = road_sign.instantiate()
+						sign.construct(Vector3(j.x, height, j.y), shared, i)
+						add_child(sign)
 		
 		# Construct coordinates
 		var coords = Globals.LatLong.new(
@@ -192,16 +207,17 @@ func make(way):
 		
 		i['shared'].append(self)
 	
-	self.curve.bake_interval = 5
+	self.curve.bake_interval = 20
 	#self.curve.up_vector_enabled = false
 	var new_points = self.curve.get_baked_points()
 	self.curve.clear_points()
 	
 	# Adjust the height
+	# TODO: Fix clipping
 	for point in new_points:
 		point.y = get_parent().get_parent().get_parent().get_elevation_at_xz(
 			Vector2(point.x, point.z)
-		)
+		) - 0.9
 		self.curve.add_point(point)
 	
 	# CSG polygon
@@ -212,7 +228,7 @@ func make(way):
 	for i in csg.polygon:
 		i.x -= 0.5
 		if(i.y == 0):
-			resizedPolygon.append(Vector2(i.x*road_width*1.2, i.y+0))
+			resizedPolygon.append(Vector2(i.x*road_width*1.5, i.y+0))
 		else:
 			resizedPolygon.append(Vector2(i.x*road_width, i.y + road_width/300.0 + randf_range(0.0, 0.001)))
 	csg.polygon = resizedPolygon

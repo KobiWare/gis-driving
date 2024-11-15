@@ -56,6 +56,7 @@ fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.417364, 0.5385, 0.560981, 1)
 fog_density = 0.0
+fog_sky_affect = 0.0
 fog_depth_begin = 0.0
 fog_depth_end = 75.0
 volumetric_fog_density = 0.0
@@ -84,13 +85,13 @@ path_joined = false
 transform = Transform3D(-0.577424, 0, 0.816424, 0, 1, 0, -0.816424, 0, -0.577424, -8.76091, 0, 4.89414)
 progress = 10.05
 
-[node name="FreeLookCamera" type="Camera3D" parent="."]
-script = ExtResource("5_6baf8")
-
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999996, 2.28612e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
+transform = Transform3D(-0.999996, 8.10686e-11, -0.00300201, -0.000702132, 0.972264, 0.233886, 0.00291875, 0.233887, -0.972259, -0.336413, 1.01231, -5.42391)
 far = 75.0
 script = ExtResource("1_nkimv")
+
+[node name="FreeLookCamera" type="Camera3D" parent="."]
+script = ExtResource("5_6baf8")
 
 [node name="VehicleBody3D" type="VehicleBody3D" parent="."]
 transform = Transform3D(0.691727, 0, 0.722159, 0, 1, 0, -0.722159, 0, 0.691727, -3.05284, 1.93441, 47.0473)

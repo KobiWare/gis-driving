@@ -4,4 +4,6 @@
 
 [resource]
 albedo_texture = ExtResource("1_ug0bp")
-uv1_scale = Vector3(500, 500, 500)
+uv1_scale = Vector3(0.3, 3, 3)
+uv1_triplanar = true
+uv1_world_triplanar = true

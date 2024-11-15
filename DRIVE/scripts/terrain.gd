@@ -72,7 +72,7 @@ func generate_terrain():
 		while lat < lat_end:
 			var newPoint = Globals.LatLongHeight.new(
 					Vector2(lon, lat), 
-					(cos(lon * 3000) * cos(lat * 3000) * 40)
+					(cos(lon * 3000) * cos(lat * 3000) * 5)
 				)
 			lat_points.append(
 				newPoint.toMeters3D()
@@ -107,9 +107,11 @@ func generate_terrain():
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = triangles
 	arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	
+	arr_mesh.surface_set_material(0, grass)
 	
 	var mesh_instance = MeshInstance3D.new()
 	mesh_instance.mesh = arr_mesh
+	mesh_instance.create_trimesh_collision()
+	
 	print(len(points), " ", len(points[0]))
 	add_child(mesh_instance)

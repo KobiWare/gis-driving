@@ -152,7 +152,7 @@ func parse():
 					encapsulation_type.add_node(attributes_dict)
 					
 			elif current_element == 'tag':
-				var recognizedTags = ["building", "building:levels", "highway", "lanes"]
+				var recognizedTags = ["building", "building:levels", "highway", "lanes", "name"]
 				if encapsulation_type != null and attributes_dict['k'] in recognizedTags:
 					encapsulation_type.add_tag(attributes_dict)
 					

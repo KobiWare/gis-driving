@@ -1,4 +1,7 @@
 extends Node
+
+const pointer = preload("res://assets/world/point.blend")
+
 class LatLong:
 	# NOTE: Backwards
 	#static var relPos = Vector2(38.6334750, -84.6633720)
