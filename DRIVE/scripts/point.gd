@@ -9,7 +9,7 @@ func _ready() -> void:
 
 func construct(position: Vector3, n1, n2):
 	self.position = position
-	print(n1.name)
+	self.get_child(0).fresh(60, n1.name)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
