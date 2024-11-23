@@ -11,7 +11,7 @@ script = ExtResource("1_rnf2d")
 script = ExtResource("3_dtg50")
 
 [node name="Node3D" type="Node3D" parent="point"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.095, 2.215, -0.225)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.095, 2.215, -0.947233)
 
 [node name="Label3D" type="Label3D" parent="point/Node3D"]
 text = "Testing"

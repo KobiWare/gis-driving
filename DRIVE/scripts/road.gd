@@ -189,9 +189,9 @@ func make(way):
 				
 				# Add props
 				for j in intersectionPolygon:
-					if randi_range(0,10) == 0:
+					if randi_range(0,4) == 0:
 						var sign = road_sign.instantiate()
-						sign.construct(Vector3(j.x, height, j.y), shared, i)
+						sign.construct(Vector3(j.x, height, j.y), shared, get_road_direction_at_node(i).angle())
 						add_child(sign)
 		
 		# Construct coordinates
@@ -208,7 +208,7 @@ func make(way):
 		i['shared'].append(self)
 	
 	self.curve.bake_interval = 20
-	#self.curve.up_vector_enabled = false
+	self.curve.up_vector_enabled = false
 	var new_points = self.curve.get_baked_points()
 	self.curve.clear_points()
 	
